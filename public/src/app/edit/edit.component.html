@@ -1,3 +1,38 @@
-<p>
-  edit works!
-</p>
+<h2>Edit a Pet?</h2>
+<h3> {{ errors  }} </h3>
+
+<form (submit)="updatePet()">
+    <input type='hidden' name=action value='create'>
+    <div>
+        <h4>Pet Name: </h4>
+        <input type='text' name='name' [(ngModel)]="pet.name">
+    </div>
+    <div>
+        <h4>Pet Type: </h4>
+        <input type='text' name='type' [(ngModel)]="pet.type">
+    </div>
+    <div>
+        <h4>Pet Description: </h4>
+        <input type='text' name='description' [(ngModel)]="pet.description">
+    </div>
+    <div>
+        <h3>Skills: </h3>
+    </div>
+    <div>
+        <h4>Skill1: </h4>
+        <input type='text' name='skill1' [(ngModel)]="skill1">
+    </div>
+    <div>
+        <h4>Skill2: </h4>
+        <input type='text' name='skill2' [(ngModel)]="skill2">
+    </div>
+    <div>
+        <h4>Skill3: </h4>
+        <input type='text' name='skill3' [(ngModel)]="skill3">
+    </div>
+    <button type=submit>Update Pet</button>
+    <input type=submit value=Add/>
+</form>
+<a [routerLink]="['/pets']">
+  <button id=cancel type='submit' value='cancel'> cancel </button>
+</a> 

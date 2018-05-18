@@ -1,33 +1,41 @@
 
 <h2>Know of a pet needing a home?</h2>
-<h3  *ngIf="errors"> Hey We Got your Errors HERE! {{ errors | json }} </h3>
+<h3> {{ errors  }} </h3>
 
-<form id=newPet action='create' method='POST'>
+<form (submit)="createPet()">
     <input type='hidden' name=action value='create'>
     <div>
-        <p>Pet Name: </p>
-        <input type='text' name='name' value="">
+        <h4>Pet Name: </h4>
+        <input type='text' name='name' [(ngModel)]="pet.name">
     </div>
     <div>
-        <p>Pet Type: </p>
-        <input type='text' name='type' value="">
+        <h4>Pet Type: </h4>
+        <input type='text' name='type' [(ngModel)]="pet.type">
+    </div>
+    <div>
+        <h4>Pet Description: </h4>
+        <input type='text' name='description' [(ngModel)]="pet.description">
     </div>
     <div>
         <h3>Skills: </h3>
     </div>
     <div>
-        <p>Skill1: </p>
-        <input type='text' name='skill1' value="">
+        <h4>Skill1: </h4>
+        <input type='text' name='skill1' [(ngModel)]="skill1">
     </div>
     <div>
-        <p>Skill2: </p>
-        <input type='text' name='skill2' value="">
+        <h4>Skill2: </h4>
+        <input type='text' name='skill2' [(ngModel)]="skill2">
     </div>
     <div>
-        <p>Skill3: </p>
-        <input type='text' name='skill3' value="">
+        <h4>Skill3: </h4>
+        <input type='text' name='skill3' [(ngModel)]="skill3">
     </div>
-
-    <input id=create type='submit' value='Add'>
-    <input id=cancel type='submit' value='cancel'>
+    <button type=submit>Add Pet</button>
+    <input type=submit value=Add/>
 </form>
+<a [routerLink]="['/pets']">
+  <button id=cancel type='submit' value='cancel'> cancel </button>
+</a> 
+
+

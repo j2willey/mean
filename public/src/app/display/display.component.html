@@ -1,3 +1,10 @@
-<p>
-  display works!
-</p>
+<div>
+  <h2>Details about {{ pet.name }} </h2>
+  <h2>Pet type:</h2>  {{ pet.type }}
+  <h2>Description:</h2>  {{ pet.description }}
+  <h2>Skills:</h2>  <p  *ngFor="let s of pet.skills"> {{s}}</p>
+  <h2>Likes:</h2>   {{ pet.likes }}
+  <button id=like  > Like this pet </button>
+  <button id=adopt (click)="adoptPet(pet._id)" > Adopt this pet </button>
+
+</div>

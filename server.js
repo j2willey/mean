@@ -28,25 +28,23 @@ var Pet = mongoose.model('Pet');
 // Root Request
 app.get('/pets/all', function(req, res) {
     Pet.find({}, function(errs, pets) {
-        console.log("get: \"/pets\" ")
+        console.log("get: \"/pets/all\" ")
         //console.log(qs)
         res.json({'message': "success", pets: pets } );
     });
 })
 
-app.get('/pets/:_id', function(req, res) {
-    console.log("get: \"/pets/\"", req.params._id)
-    console.log("get: \"/pets/\"", req.params)
-    Pet.find({'_id' : req.params._id}, function(errs, pets) {
-        console.log("get: \"/\" ", req.params._id)
-        //console.log(qs)
-        res.json({ message : "success", pets: pets  } );
+app.get('/pets/get/:_id', function(req, res) {
+    console.log("get: \"/pets/get/", req.params._id,"\"", req.params)
+    Pet.find({'_id' : req.params._id}, function(errs, pet) {
+        console.log(pet)
+        res.json({ message : "success", pet: pet  } );
     });
 })
 
 
 // Add Pet Request 
-app.post('/pets', function(req, res) {
+app.post('/pets/new', function(req, res) {
     console.log("POST DATA", req.body);
     console.log("Looks create pet:")
     var pet   = req.body
@@ -57,7 +55,7 @@ app.post('/pets', function(req, res) {
             console.log("We have an error!", err);
             var errMsg = "";
             for(var key in err.errors){
-                errMsg += err.errors[key].message;
+                errMsg += "ERROR: " + key + " must be 3 characters or longer\n";
             }
             res.json({ message : "failed", error: errMsg  } );
         } else {
@@ -67,12 +65,12 @@ app.post('/pets', function(req, res) {
 })
 
 app.put('/pets/:_id', function(req, res) {
-    console.log("POST DATA", req.body);
+    console.log("PUT DATA", req.body);
     console.log("Looks update pet:")
     var pet   = req.body
     console.log("Update:\n", pet);
-    Pet.update({'_id' : req.params._id}, pet, function(errs, pets) {
-        console.log("update: \"/\" ", req.params._id)
+    Pet.update({'_id' : req.params._id}, pet, function(err, pets) {
+        console.log("update: \"/\" ", req.params._id);
         if (err) {
             console.log("We have an error!", err);
             var errMsg = "";
@@ -101,7 +99,7 @@ app.delete('/pets/:_id', function(req, res) {
             }
             res.json({ message : "failed", error: errMsg  } );
         } else {
-            pet.remove({ '_id' : req.params._id}, function(err, pets) {
+            Pet.remove({ '_id' : req.params._id}, function(err, pets) {
                 console.log(" == Done!", err);
                 res.json({ message : "success"} );
             }); 
