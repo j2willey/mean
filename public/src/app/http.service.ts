@@ -8,4 +8,25 @@ import { HttpClient } from '@angular/common/http';
 export class HttpService {
 
   constructor(private _http: HttpClient) { }
+
+  getPets(){
+    console.log("getPets:");
+    return this._http.get('/pets/all');
+  }
+
+  createPet(data){
+    console.log("createPet:");
+    return this._http.post('/pets/new', data);
+  }
+
+  updatePet(id, data) {
+    console.log("updatePet:", data);  
+    return this._http.put('/pets/' + id, data);
+  }
+   
+  deletePet(id) {
+    console.log("deletePet:");  
+    return this._http.delete('/pets/' + id);
+  }
 }
+

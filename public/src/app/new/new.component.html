@@ -1,0 +1,33 @@
+
+<h2>Know of a pet needing a home?</h2>
+<h3  *ngIf="errors"> Hey We Got your Errors HERE! {{ errors | json }} </h3>
+
+<form id=newPet action='create' method='POST'>
+    <input type='hidden' name=action value='create'>
+    <div>
+        <p>Pet Name: </p>
+        <input type='text' name='name' value="">
+    </div>
+    <div>
+        <p>Pet Type: </p>
+        <input type='text' name='type' value="">
+    </div>
+    <div>
+        <h3>Skills: </h3>
+    </div>
+    <div>
+        <p>Skill1: </p>
+        <input type='text' name='skill1' value="">
+    </div>
+    <div>
+        <p>Skill2: </p>
+        <input type='text' name='skill2' value="">
+    </div>
+    <div>
+        <p>Skill3: </p>
+        <input type='text' name='skill3' value="">
+    </div>
+
+    <input id=create type='submit' value='Add'>
+    <input id=cancel type='submit' value='cancel'>
+</form>

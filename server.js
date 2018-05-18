@@ -12,81 +12,98 @@ var mongoose = require('mongoose');
 //   our db in mongodb -- this should match the name of the db you are going to use for your project.
 mongoose.connect('mongodb://localhost/basic_mongoose');
 
-var TaskSchema = new mongoose.Schema({
-    title:  { type: String, required: true, minlength: 1 },
-    description:   { type: String, required: true, minlength: 1 },
-    boolean:    { type: Boolean, default: false }
+var PetSchema = new mongoose.Schema({
+    name:  { type: String, required: true, minlength: 3 },
+    type:   { type: String, required: true, minlength: 3 },
+    description:   { type: String, required: true, minlength: 3 },
+    skills:   [String],
+    likes:    { type: Number, default: 0 }
 }, {timestamps: true });
 
-mongoose.model('Task', TaskSchema);
-// Retrieve the Schema called 'Task' and store it to the variable User
-var Task = mongoose.model('Task');
+mongoose.model('Pet', PetSchema);
+// Retrieve the Schema called 'pet' and store it to the variable User
+var Pet = mongoose.model('Pet');
 
 // Routes
 // Root Request
-app.get('/tasks', function(req, res) {
-    Task.find({}, function(errs, tasks) {
-        console.log("get: \"/tasks\" ")
+app.get('/pets/all', function(req, res) {
+    Pet.find({}, function(errs, pets) {
+        console.log("get: \"/pets\" ")
         //console.log(qs)
-        res.json({'message': "success", tasks: tasks } );
+        res.json({'message': "success", pets: pets } );
     });
 })
 
-app.get('/tasks/:_id', function(req, res) {
-    console.log("get: \"/tasks/\"", req.params._id)
-    console.log("get: \"/tasks/\"", req.params)
-    Task.find({'_id' : req.params._id}, function(errs, tasks) {
+app.get('/pets/:_id', function(req, res) {
+    console.log("get: \"/pets/\"", req.params._id)
+    console.log("get: \"/pets/\"", req.params)
+    Pet.find({'_id' : req.params._id}, function(errs, pets) {
         console.log("get: \"/\" ", req.params._id)
         //console.log(qs)
-        res.json({ message : "success", tasks: tasks  } );
+        res.json({ message : "success", pets: pets  } );
     });
 })
 
 
-// Add User Request 
-app.post('/tasks', function(req, res) {
+// Add Pet Request 
+app.post('/pets', function(req, res) {
     console.log("POST DATA", req.body);
-    console.log("Looks create task:")
-    var task   = req.body
-    console.log("Create:\n", task);
-    var t = new Task(task);
-    t.save(function (err) {
+    console.log("Looks create pet:")
+    var pet   = req.body
+    console.log("Create:\n", pet);
+    var p = new Pet(pet);
+    p.save(function (err) {
         if (err) {
             console.log("We have an error!", err);
+            var errMsg = "";
+            for(var key in err.errors){
+                errMsg += err.errors[key].message;
+            }
+            res.json({ message : "failed", error: errMsg  } );
+        } else {
+            res.json({ message : "success"} );
         }
     });
-    res.redirect('/tasks');
 })
 
-app.put('/tasks/:_id', function(req, res) {
+app.put('/pets/:_id', function(req, res) {
     console.log("POST DATA", req.body);
-    console.log("Looks create task:")
-    var task   = req.body
-    console.log("Update:\n", task);
-    Task.update({'_id' : req.params._id}, task, function(errs, tasks) {
+    console.log("Looks update pet:")
+    var pet   = req.body
+    console.log("Update:\n", pet);
+    Pet.update({'_id' : req.params._id}, pet, function(errs, pets) {
         console.log("update: \"/\" ", req.params._id)
-        //console.log(qs)
-        res.json({ message : "success", tasks: tasks  } );
+        if (err) {
+            console.log("We have an error!", err);
+            var errMsg = "";
+            for(var key in err.errors){
+                errMsg += err.errors[key].message;
+            }
+            res.json({ message : "failed", error: errMsg  } );
+        } else {
+            res.json({ message : "success"} );
+        }
     });
-    //res.redirect('/tasks');
+    //res.redirect('/pets');
 })
 
 
 // Add User Request 
-app.delete('/tasks/:_id', function(req, res) {
+app.delete('/pets/:_id', function(req, res) {
     console.log("Delete", req.params._id);
-    Task.find({ '_id' : req.params._id}, function(err, tasks) {
-        console.log("Delete?:", tasks );
+    Pet.find({ '_id' : req.params._id}, function(err, pets) {
+        console.log("Delete?:", pets );
         if (err) {
             console.log("We have an error!", err);
+            var errMsg = "";
             for(var key in err.errors){
-                req.flash('error', err.errors[key].message);
+                errMsg += err.errors[key].message;
             }
-            res.json({ message : "failed", tasks: tasks  } );
+            res.json({ message : "failed", error: errMsg  } );
         } else {
-            Task.remove({ '_id' : req.params._id}, function(err, tasks) {
+            pet.remove({ '_id' : req.params._id}, function(err, pets) {
                 console.log(" == Done!", err);
-                res.json({ message : "success", tasks: tasks  } );
+                res.json({ message : "success"} );
             }); 
         } 
     });
