@@ -20,8 +20,10 @@
       <td>{{ p.type }}</td>
       <td>
         {{ p._id }}
-        <button >Details</button> 
-        <button >Edit</button> 
+        <a [routerLink]="['/pets/',p._id]">      <button >Details</button> </a> | 
+        <a [routerLink]="['/pets/',p._id,'edit']"><button >Edit</button> </a>  
+ 
+        > 
       </td>
     </tr>
   </table>
