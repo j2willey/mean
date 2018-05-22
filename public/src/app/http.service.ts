@@ -35,4 +35,9 @@ export class HttpService {
     return this._http.delete('/moovies/' + id);
   }
 
+  deleteReview(mid, rid) {
+    console.log("deleteMovie:");  
+    return this._http.delete('/moovies/' + mid + '/review/' + rid);
+  }
+
 }

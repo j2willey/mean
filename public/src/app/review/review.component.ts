@@ -40,6 +40,7 @@ export class ReviewComponent implements OnInit {
 
   addReview() {
     console.log("===== Adding a new review =")
+    this.errors = "";
     this.movie.reviews.push(this.review);
     var ratSum:number = 0;
     for (var review of this.movie.reviews) {
@@ -57,7 +58,7 @@ export class ReviewComponent implements OnInit {
         this.errors = data['error'];
       } else {
         this.errors = null;        
-        this._router.navigate(['/movies']);                
+        this._router.navigate(['/movies/' + this.movie._id]);                
       }
       console.log("Added new Movie and Review!", data);
     });    

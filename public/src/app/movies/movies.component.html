@@ -1,6 +1,6 @@
 <div>
   <h1>Movie List</h1>
-  <a [routerLink]="['/movies/new']">      <button >Add a new movie</button> </a> | 
+  <a class=mbutton [routerLink]="['/movies/new']"> <button > Add a new movie</button> </a>  
   <table style="width:100%">
     <tr>
       <th>Movie Title</th>
@@ -11,7 +11,7 @@
       <td>{{ m.title }}</td>
       <td>{{ m.avgRating }} ( {{ m.reviews.length}} reviews )</td>
       <td>
-        {{ m._id }}
+        {{ m.id }}
         <a [routerLink]="['/movies/',m._id]">      <button >Read Reviews</button> </a> | 
         <a [routerLink]="['/movies/',m._id,'review']"><button >Write Review</button> </a>  
       </td>

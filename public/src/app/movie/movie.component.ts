@@ -47,4 +47,18 @@ export class MovieComponent implements OnInit {
     });    
   }
 
+  deleteReview(mid, rid) {
+    console.log("delete Review: ", rid)
+    let observable = this._httpService.deleteReview(mid, rid);
+    // subscribe to the Observable and provide the code we would like to do with our data from the response
+    observable.subscribe(data => { 
+      console.log("Deleted movie in the component!", data);
+      //this.pet = {name:"", description:"", type:"", skills:[], likes:0}
+      console.log(this.movie);
+      this._router.navigate(['/movies']);                
+    });    
+  }
+
+
+
 }

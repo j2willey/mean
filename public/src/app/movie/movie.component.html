@@ -1,17 +1,19 @@
 <div>
-    <a [routerLink]="['/movies/delete']">Delete movie Fixme</a> 
+    <button id=adopt (click)="deleteMovie(movie._id)" > Delete Movie </button>
     <div>
-    <table style="width:100%">
       <h2>Reviews for {{ movie.title }}</h2>
+    <table style="width:100%">
       <tr>
         <th>Reviewer</th>
         <th>Stars</th> 
         <th>Reviews</th>
+        <th>Action</th>
       </tr>
       <tr *ngFor="let r of movie.reviews">
         <td>{{ r.username }}</td>
         <td>{{ r.rating }}</td>
-        <td>{{ r.review }}</td>
+        <td>{{ r.review }}  </td>
+        <td> <button id=adopt (click)="deleteReview(movie._id,r._id)" > Delete Review </button></td>
       </tr>
     </table>
      </div>
