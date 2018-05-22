@@ -12,91 +12,122 @@ var mongoose = require('mongoose');
 //   our db in mongodb -- this should match the name of the db you are going to use for your project.
 mongoose.connect('mongodb://localhost/basic_mongoose');
 
-var TaskSchema = new mongoose.Schema({
-    title:  { type: String, required: true, minlength: 1 },
-    description:   { type: String, required: true, minlength: 1 },
-    boolean:    { type: Boolean, default: false }
+var ReviewSchema = new mongoose.Schema({
+    movie:       { type: String },
+    username:    { type: String, required: true, minlength: 3 },
+    rating:      { type: Number },
+    review:      { type: String, required: true, minlength: 3 }
 }, {timestamps: true });
 
-mongoose.model('Task', TaskSchema);
-// Retrieve the Schema called 'Task' and store it to the variable User
-var Task = mongoose.model('Task');
+var MovieSchema = new mongoose.Schema({
+    title:       { type: String, required: true, minlength: 1 },
+    avgRating:   { type: Number },
+    reviews:     [ReviewSchema]
+}, {timestamps: true });
+
+
+mongoose.model('Movie', MovieSchema);
+// Retrieve the Schema called 'Movie' and store it to the variable User
+var Movie = mongoose.model('Movie');
 
 // Routes
 // Root Request
-app.get('/tasks', function(req, res) {
-    Task.find({}, function(errs, tasks) {
-        console.log("get: \"/tasks\" ")
-        //console.log(qs)
-        res.json({'message': "success", tasks: tasks } );
+app.get('/', function(req, res) {
+    console.log("get: \"/\" ")
+    res.redirect('/movies');
+})
+
+app.get('/moovies', function(req, res) {
+    Movie.find({}, function(errs, movies) {
+        console.log("get: \"/moovies\" ")
+        res.json({'message': "success", movies: movies } );
     });
 })
 
-app.get('/tasks/:_id', function(req, res) {
-    console.log("get: \"/tasks/\"", req.params._id)
-    console.log("get: \"/tasks/\"", req.params)
-    Task.find({'_id' : req.params._id}, function(errs, tasks) {
+app.get('/moovies/:_id', function(req, res) {
+    console.log("get: \"/moovies/\"", req.params._id,"\"", req.params)
+    Movie.find({'_id' : req.params._id}, function(errs, movies) {
         console.log("get: \"/\" ", req.params._id)
-        //console.log(qs)
-        res.json({ message : "success", tasks: tasks  } );
+        res.json({ message : "success", movies: movies  } );
     });
 })
 
 
 // Add User Request 
-app.post('/tasks', function(req, res) {
-    console.log("POST DATA", req.body);
-    console.log("Looks create task:")
-    var task   = req.body
-    console.log("Create:\n", task);
-    var t = new Task(task);
-    t.save(function (err) {
+app.post('/moovies/new', function(req, res) {
+    var movie   = req.body;
+    console.log("Create Movie:\n", movie);
+    Movie.find({ 'name' : movie.name}, function(err, movies) {
         if (err) {
             console.log("We have an error!", err);
+            var errMsg = "";
+            for(var key in err.errors){
+                errMsg += err.errors[key].message;
+            }
+            res.json({ message : "failed", error: errMsg  } );
+        } else {
+            console.log("MOVIES:", movies)
+            if (movies.length >= 1) {
+                res.json({ message : "failed", error: "Movie with that name exists"  } );                
+            } else {
+                var p = new Movie(movie);
+                p.save(function (err) {
+                    if (err) {
+                        console.log("We have an error!", err);
+                        var errMsg = "";
+                        for(var key in err.errors){
+                            errMsg += "ERROR: " + key + " must be 3 characters or longer\n";
+                        }
+                        res.json({ message : "failed", error: errMsg  } );
+                    } else {
+                        res.json({ message : "success"} );
+                    }
+                });
+            }
         }
-    });
-    res.redirect('/tasks');
+    })
 })
 
-app.put('/tasks/:_id', function(req, res) {
+app.put('/movies/:_id', function(req, res) {
     console.log("POST DATA", req.body);
-    console.log("Looks create task:")
-    var task   = req.body
-    console.log("Update:\n", task);
-    Task.update({'_id' : req.params._id}, task, function(errs, tasks) {
+    console.log("Looks create movie:")
+    var movie   = req.body
+    console.log("Update:\n", movie);
+    Movie.update({'_id' : req.params._id}, movie, function(errs, movies) {
         console.log("update: \"/\" ", req.params._id)
         //console.log(qs)
-        res.json({ message : "success", tasks: tasks  } );
+        res.json({ message : "success", movies: movies  } );
     });
-    //res.redirect('/tasks');
+    //res.redirect('/movies');
 })
 
 
 // Add User Request 
-app.delete('/tasks/:_id', function(req, res) {
+app.delete('/movies/:_id', function(req, res) {
     console.log("Delete", req.params._id);
-    Task.find({ '_id' : req.params._id}, function(err, tasks) {
-        console.log("Delete?:", tasks );
+    Movie.find({ '_id' : req.params._id}, function(err, movies) {
+        console.log("Delete?:", movies );
         if (err) {
             console.log("We have an error!", err);
             for(var key in err.errors){
                 req.flash('error', err.errors[key].message);
             }
-            res.json({ message : "failed", tasks: tasks  } );
+            res.json({ message : "failed", movies: movies  } );
         } else {
-            Task.remove({ '_id' : req.params._id}, function(err, tasks) {
+            Movie.remove({ '_id' : req.params._id}, function(err, movies) {
                 console.log(" == Done!", err);
-                res.json({ message : "success", tasks: tasks  } );
+                res.json({ message : "success", movies: movies  } );
             }); 
         } 
     });
 })
 
 app.all("*", (req,res,next) => {
+    console.log("request: ================================");
     res.sendFile(path.resolve("./public/dist/public/index.html"))
   });
 
 // Setting our Server to Listen on Port: 8000
 app.listen(8000, function() {
-    console.log("listening on port 8000");
+    console.log("listening on port 8000__");
 })

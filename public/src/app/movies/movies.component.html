@@ -1,0 +1,20 @@
+<div>
+  <h1>Movie List</h1>
+  <a [routerLink]="['/movies/new']">      <button >Add a new movie</button> </a> | 
+  <table style="width:100%">
+    <tr>
+      <th>Movie Title</th>
+      <th>Average Stars</th> 
+      <th>Available Actions</th>
+    </tr>
+    <tr *ngFor="let m of movies">
+      <td>{{ m.title }}</td>
+      <td>{{ m.avgRating }}</td>
+      <td>
+        {{ m._id }}
+        <a [routerLink]="['/movies/',m._id]">      <button >Read Reviews</button> </a> | 
+        <a [routerLink]="['/movies/',m._id,'review']"><button >Write Review</button> </a>  
+      </td>
+    </tr>
+  </table>
+</div>

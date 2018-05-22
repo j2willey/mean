@@ -1,0 +1,32 @@
+<h2>Submit a movie and your review</h2>
+<h3> {{ errors  }} </h3>
+
+<form (submit)="addMovie()">
+    <input type='hidden' name=action value='create'>
+    <div>
+        <h4>Movie Title: </h4>
+        <input type='text' name='name' [(ngModel)]="movie.title">
+    </div>
+    <div>
+        <h4>Your name: </h4>
+        <input type='text' name='type' [(ngModel)]="movie.reviews[0].username">
+    </div>
+    <div>
+        <h4>Stars: </h4>
+        <select name="cars" [(ngModel)]="movie.reviews[0].rating">
+            <option value=0>0</option>
+            <option value=1 selected>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+          </select>
+    </div>
+    <div>
+        <h4>Your Review: </h4>
+        <input type='text' name='review' [(ngModel)]="movie.reviews[0].review">
+    </div>
+    <button type=submit>Submit</button>
+</form>
+<a [routerLink]="['/movies']">
+  <button id=cancel type='submit' value='cancel'> Back </button>
+</a> 
