@@ -27,7 +27,7 @@ var Pet = mongoose.model('Pet');
 // Routes
 // Root Request
 app.get('/pets/all', function(req, res) {
-    Pet.find({}, function(errs, pets) {
+    Pet.find({}).sort({type: 'ascending'}).exec(function(errs, pets) {
         console.log("get: \"/pets/all\" ")
         //console.log(qs)
         res.json({'message': "success", pets: pets } );
