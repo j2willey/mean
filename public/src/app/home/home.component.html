@@ -6,23 +6,13 @@
       <th>Type</th> 
       <th>Actions</th>
     </tr>
-    <tr>
-        <th>Hardcode</th>
-        <th>Hardcode</th> 
-        <th>  
-          <a [routerLink]="['/pets/1']">display pet </a> | 
-          <a [routerLink]="['/pets/1/edit']">edit</a>  
-        </th>
-    </tr>
     <tr *ngFor="let p of pets">
       <td>{{ p.name }}</td>
       <td>{{ p.type }}</td>
       <td>
-        {{ p._id }}
+        {{ p.id }}
         <a [routerLink]="['/pets/',p._id]">      <button >Details</button> </a> | 
         <a [routerLink]="['/pets/',p._id,'edit']"><button >Edit</button> </a>  
- 
-        > 
       </td>
     </tr>
   </table>

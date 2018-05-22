@@ -25,10 +25,10 @@ export class EditComponent implements OnInit {
     this.skill2 = "";
     this.skill3 = "";
     this.errors = null;
-    console.log("Hi Mom")
     this.pet = {name:"", description:"", type:"", skills:[], likes:0}
     this._route.params.subscribe((params: Params) => {console.log(params['id']);
-      this.getPet(params['id']); });
+      this.getPet(params['id']); 
+    });
   }
 
   getPet(id) {
@@ -37,11 +37,21 @@ export class EditComponent implements OnInit {
     observable.subscribe(data => { 
       console.log("Got our pets in the component!", data);
       if ( 'pet' in data ) {
-        console.log("got a pet")
         this.pet = data['pet'][0];
+        console.log("got a pet", this.pet)
+        console.log(this.pet.skills[0], this.pet.skills.length)
+        this.skill1 = (this.pet.skills.length > 0 )? this.pet.skills[0] : "";
+        this.skill2 = (this.pet.skills.length > 1 )? this.pet.skills[1] : "";
+        this.skill3 = (this.pet.skills.length > 2 )? this.pet.skills[2] : "";
       }
       console.log(this.pet);
     });    
+  }
+
+  likePet() {
+    console.log("like Pet:")
+    this.pet.likes++;
+    this.updatePet();
   }
 
   updatePet() {
@@ -55,18 +65,17 @@ export class EditComponent implements OnInit {
     if (this.skill3 != "") {
       this.pet.skills.push(this.skill3);
     }
-    console.log("Create new Pet!", this.pet);
+    console.log("Update new Pet!", this.pet);
     let observable = this._httpService.updatePet(this.pet._id, this.pet);
     // subscribe to the Observable and provide the code we would like to do with our data from the response
     observable.subscribe(data => { 
       if ( 'error' in data) {
         this.errors = data['error'];
       } else {
-        this.errors = null;        
+        this.errors = null;
+        this._router.navigate(['/pets']);                
       }
-      console.log("Created new Pet!", data);
-      this.pet.title = null;
-      this.pet.description = null;
+      console.log("Updated new Pet!", data);
     });    
   }
 

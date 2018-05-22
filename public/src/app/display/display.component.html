@@ -4,7 +4,9 @@
   <h2>Description:</h2>  {{ pet.description }}
   <h2>Skills:</h2>  <p  *ngFor="let s of pet.skills"> {{s}}</p>
   <h2>Likes:</h2>   {{ pet.likes }}
-  <button id=like  > Like this pet </button>
+  <button id=like  (click)="likePet(pet._id)"> Like this pet </button>
   <button id=adopt (click)="adoptPet(pet._id)" > Adopt this pet </button>
-
+  <a [routerLink]="['/pets']">
+    <button id=cancel type='submit' value='cancel'> Back </button>
+  </a> 
 </div>

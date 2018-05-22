@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpService } from '../http.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new',
@@ -13,7 +14,10 @@ export class NewComponent implements OnInit {
   skill2 : string;
   skill3 : string;
   errors : string;
-  constructor(private _httpService: HttpService) { }
+  constructor(private _httpService: HttpService,
+              private _route: ActivatedRoute,
+              private _router: Router
+  ) { }
 
   ngOnInit() {
     this.pet = {name:"", type: "", description:"", skills:[]};
@@ -43,10 +47,12 @@ export class NewComponent implements OnInit {
         this.errors = data['error'];
       } else {
         this.errors = null;        
+        this.pet.name = null;
+        this.pet.type = null;
+        this.pet.description = null;
+        this._router.navigate(['/pets']);                
       }
       console.log("Created new Pet!", data);
-      this.pet.title = null;
-      this.pet.description = null;
     });    
   }
 

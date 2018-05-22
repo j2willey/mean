@@ -9,14 +9,18 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class DisplayComponent implements OnInit {
   pet : any;
+  liked : boolean;
+  errors : string;
 
   constructor(private _httpService: HttpService,
               private _route: ActivatedRoute,
               private _router: Router
-              ) { }
+              ) {}
 
   ngOnInit() {
     this.pet = {name:"", description:"", type:"", skills:[], likes:0}
+    this.liked = false;
+    this.errors = "";
     this._route.params.subscribe((params: Params) => {console.log(params['id']);
       this.getPet(params['id']); });
   }
@@ -41,6 +45,28 @@ export class DisplayComponent implements OnInit {
       console.log("Adopted pet in the component!", data);
       this.pet = {name:"", description:"", type:"", skills:[], likes:0}
       console.log(this.pet);
+      this._router.navigate(['/pets']);                
     });    
   }
+
+  likePet() {
+    if (! this.liked) {
+      this.liked = true;
+      console.log("Like this Pet!", this.pet);
+      this.pet.likes++;
+      let observable = this._httpService.updatePet(this.pet._id, this.pet);
+      // subscribe to the Observable and provide the code we would like to do with our data from the response
+      observable.subscribe(data => { 
+        if ( 'error' in data) {
+          this.errors = data['error'];
+        } else {
+          this.errors = null;
+        }
+        console.log("Updated new Pet!", data);
+      });          
+    } else {
+      console.log("Already Liked this Pet!", this.pet);
+    }
+  }
+
 }

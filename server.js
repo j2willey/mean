@@ -45,31 +45,46 @@ app.get('/pets/get/:_id', function(req, res) {
 
 // Add Pet Request 
 app.post('/pets/new', function(req, res) {
-    console.log("POST DATA", req.body);
-    console.log("Looks create pet:")
     var pet   = req.body
-    console.log("Create:\n", pet);
-    var p = new Pet(pet);
-    p.save(function (err) {
+    console.log("Create Pet:\n", pet);
+    Pet.find({ 'name' : pet.name}, function(err, pets) {
         if (err) {
             console.log("We have an error!", err);
             var errMsg = "";
             for(var key in err.errors){
-                errMsg += "ERROR: " + key + " must be 3 characters or longer\n";
+                errMsg += err.errors[key].message;
             }
             res.json({ message : "failed", error: errMsg  } );
         } else {
-            res.json({ message : "success"} );
+            console.log("PETS:", pets)
+            if (pets.length >= 1) {
+                res.json({ message : "failed", error: "Pet with that name exists"  } );                
+            } else {
+                var p = new Pet(pet);
+                p.save(function (err) {
+                    if (err) {
+                        console.log("We have an error!", err);
+                        var errMsg = "";
+                        for(var key in err.errors){
+                            errMsg += "ERROR: " + key + " must be 3 characters or longer\n";
+                        }
+                        res.json({ message : "failed", error: errMsg  } );
+                    } else {
+                        res.json({ message : "success"} );
+                    }
+                });
+            }
         }
-    });
+    })
 })
 
+// update Pets
 app.put('/pets/:_id', function(req, res) {
     console.log("PUT DATA", req.body);
     console.log("Looks update pet:")
     var pet   = req.body
     console.log("Update:\n", pet);
-    Pet.update({'_id' : req.params._id}, pet, function(err, pets) {
+    Pet.update({'_id' : req.params._id}, pet,  { runValidators: true }, function(err, pets) {
         console.log("update: \"/\" ", req.params._id);
         if (err) {
             console.log("We have an error!", err);
@@ -86,7 +101,7 @@ app.put('/pets/:_id', function(req, res) {
 })
 
 
-// Add User Request 
+// Delete(Adopt) Pet Request 
 app.delete('/pets/:_id', function(req, res) {
     console.log("Delete", req.params._id);
     Pet.find({ '_id' : req.params._id}, function(err, pets) {
