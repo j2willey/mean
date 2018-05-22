@@ -24,6 +24,7 @@ export class NewComponent implements OnInit {
   }
   
   addMovie() {
+    this.movie.avgRating = this.movie.reviews[0].rating;
     console.log("Add new movie!", this.movie);
     let observable = this._httpService.addMovie(this.movie);
     // subscribe to the Observable and provide the code we would like to do with our data from the response

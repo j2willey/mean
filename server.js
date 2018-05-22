@@ -33,13 +33,13 @@ var Movie = mongoose.model('Movie');
 // Routes
 // Root Request
 app.get('/', function(req, res) {
-    console.log("get: \"/\" ")
+    console.log("get: \"/\" ");
     res.redirect('/movies');
 })
 
 app.get('/moovies', function(req, res) {
+    console.log("get: \"/moovies\" ");
     Movie.find({}, function(errs, movies) {
-        console.log("get: \"/moovies\" ")
         res.json({'message': "success", movies: movies } );
     });
 })
@@ -57,7 +57,7 @@ app.get('/moovies/:_id', function(req, res) {
 app.post('/moovies/new', function(req, res) {
     var movie   = req.body;
     console.log("Create Movie:\n", movie);
-    Movie.find({ 'name' : movie.name}, function(err, movies) {
+    Movie.find({ 'title' : movie.title}, function(err, movies) {
         if (err) {
             console.log("We have an error!", err);
             var errMsg = "";
@@ -88,7 +88,7 @@ app.post('/moovies/new', function(req, res) {
     })
 })
 
-app.put('/movies/:_id', function(req, res) {
+app.put('/moovies/:_id', function(req, res) {
     console.log("POST DATA", req.body);
     console.log("Looks create movie:")
     var movie   = req.body
@@ -103,7 +103,7 @@ app.put('/movies/:_id', function(req, res) {
 
 
 // Add User Request 
-app.delete('/movies/:_id', function(req, res) {
+app.delete('/moovies/:_id', function(req, res) {
     console.log("Delete", req.params._id);
     Movie.find({ '_id' : req.params._id}, function(err, movies) {
         console.log("Delete?:", movies );

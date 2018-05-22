@@ -9,7 +9,7 @@
     </tr>
     <tr *ngFor="let m of movies">
       <td>{{ m.title }}</td>
-      <td>{{ m.avgRating }}</td>
+      <td>{{ m.avgRating }} ( {{ m.reviews.length}} reviews )</td>
       <td>
         {{ m._id }}
         <a [routerLink]="['/movies/',m._id]">      <button >Read Reviews</button> </a> | 

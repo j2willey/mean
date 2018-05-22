@@ -1,3 +1,27 @@
-<p>
-  review works!
-</p>
+<h2>Add your review for {{ movie.title }} </h2>
+<h3> {{ errors  }} </h3>
+
+<form (submit)="addReview()">
+    <div>
+        <h4>Your name: </h4>
+        <input type='text' name='type' [(ngModel)]="review.username">
+    </div>
+    <div>
+        <h4>Stars: </h4>
+        <select name="rating" [(ngModel)]="review.rating">
+            <option value=0>0</option>
+            <option value=1 selected>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+          </select>
+    </div>
+    <div>
+        <h4>Your Review: </h4>
+        <input type='text' name='review' [(ngModel)]="review.review">
+    </div>
+    <button type=submit>Submit</button>
+</form>
+<a [routerLink]="['/movies']">
+  <button id=cancel type='submit' value='cancel'> Cancel </button>
+</a> 

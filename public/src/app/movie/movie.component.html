@@ -1,3 +1,19 @@
-<p>
-  movie works!
-</p>
+<div>
+    <a [routerLink]="['/movies/delete']">Delete movie Fixme</a> 
+    <div>
+    <table style="width:100%">
+      <h2>Reviews for {{ movie.title }}</h2>
+      <tr>
+        <th>Reviewer</th>
+        <th>Stars</th> 
+        <th>Reviews</th>
+      </tr>
+      <tr *ngFor="let r of movie.reviews">
+        <td>{{ r.username }}</td>
+        <td>{{ r.rating }}</td>
+        <td>{{ r.review }}</td>
+      </tr>
+    </table>
+     </div>
+  </div>
+  

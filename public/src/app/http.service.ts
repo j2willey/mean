@@ -21,7 +21,7 @@ export class HttpService {
 
   getMovie(id) {
     console.log("getMovie:", id);  
-    return this._http.get('/moovies/get/' + id);
+    return this._http.get('/moovies/' + id);
   }
    
  
